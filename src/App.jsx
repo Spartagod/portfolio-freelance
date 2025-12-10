@@ -1,62 +1,64 @@
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Header from "./components/header";
 import HeroSection from "./sections/HeroSection";
 import ProjectSection from "./sections/ProjectSection";
+import ExperienceSection from "./sections/experienceSection";
+import ContactSection from "./sections/contactSection";
+
+const sections = [
+  { id: "hero", component: <HeroSection /> },
+  { id: "project", component: <ProjectSection /> },
+  { id: "experience", component: <ExperienceSection /> },
+  { id: "contact", component: <ContactSection /> },
+];
 
 export default function App() {
+  const [currentSection, setCurrentSection] = useState(0);
+
+  useEffect(() => {
+    let ticking = false;
+
+    const handleWheel = (e) => {
+      if (!ticking) {
+        if (e.deltaY > 0) {
+          // Scroll vers le bas
+          setCurrentSection((prev) =>
+            prev < sections.length - 1 ? prev + 1 : prev
+          );
+        } else if (e.deltaY < 0) {
+          // Scroll vers le haut
+          setCurrentSection((prev) => (prev > 0 ? prev - 1 : prev));
+        }
+        ticking = true;
+        setTimeout(() => (ticking = false), 800);
+      }
+    };
+
+    window.addEventListener("wheel", handleWheel);
+    return () => window.removeEventListener("wheel", handleWheel);
+  }, []);
+
   return (
     <>
       <Header />
-      <HeroSection />
-
-      {/* Séparateur vague croisée */}
-      <div style={{ position: "relative", width: "100%", height: "150px", overflow: "hidden" }}>
-        <svg viewBox="0 0 1440 100" preserveAspectRatio="none" style={{ width: "100%", height: "100%" }}>
-          {/* Ligne 1 */}
-          <motion.path
-            d="M0,50 C360,80 1080,20 1440,50"
-            stroke="#8b5cf6"
-            strokeWidth="2"
-            fill="transparent"
-            animate={{ d: [
-              "M0,50 C360,80 1080,20 1440,50",
-              "M0,50 C360,60 1080,40 1440,50",
-              "M0,50 C360,80 1080,20 1440,50"
-            ]}}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          />
-
-          {/* Ligne 2 */}
-          <motion.path
-            d="M0,60 C360,30 1080,90 1440,60"
-            stroke="#c084fc"
-            strokeWidth="2"
-            fill="transparent"
-            animate={{ d: [
-              "M0,60 C360,30 1080,90 1440,60",
-              "M0,60 C360,50 1080,70 1440,60",
-              "M0,60 C360,30 1080,90 1440,60"
-            ]}}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          />
-
-          {/* Ligne 3 */}
-          <motion.path
-            d="M0,40 C360,60 1080,10 1440,40"
-            stroke="#a78bfa"
-            strokeWidth="2"
-            fill="transparent"
-            animate={{ d: [
-              "M0,40 C360,60 1080,10 1440,40",
-              "M0,40 C360,50 1080,30 1440,40",
-              "M0,40 C360,60 1080,10 1440,40"
-            ]}}
-            transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </svg>
+      <div style={{ position: "relative", overflow: "hidden" }}>
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={sections[currentSection].id}
+            initial={{ y: currentSection > 0 ? "100%" : "-100%", opacity: 0 }}
+            animate={{ y: "0%", opacity: 1 }}
+            exit={{
+              y: currentSection < sections.length - 1 ? "-100%" : "100%",
+              opacity: 0,
+            }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+            style={{ height: "100vh" }}
+          >
+            {sections[currentSection].component}
+          </motion.div>
+        </AnimatePresence>
       </div>
-
-      <ProjectSection />
     </>
   );
 }

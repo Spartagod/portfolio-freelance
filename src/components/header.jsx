@@ -50,7 +50,7 @@ const Header = () => {
 
         {/* Desktop Navigation */}
         <button className="lg:flex hidden space-x-8">
-          {["Home", "About", "Project", "Experience", "Contact"].map((item, index) => (
+          {[ "Project", "Experience", "Contact"].map((item, index) => (
             <motion.a
               
               key={item}
@@ -157,7 +157,7 @@ const Header = () => {
       px-4 py-5 space-y-5"
         >
           <nav className="flex flex-col space-y-3">
-            {["Home", "About", "Project", "Experience", "Contact"].map(
+            {[ "Project", "Experience", "Contact"].map(
               (item) => (
                 <a
                   className="text-gray-300 font-medium py-2"
