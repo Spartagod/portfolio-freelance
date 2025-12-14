@@ -8,15 +8,15 @@
 
 /* Styles globaux */
 body {
-  @apply font-serif; /* Utilise la famille serif de Tailwind, on redéfinit ci-dessous */
+  @apply font-sans;
+  overflow-x: hidden;
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
   width: 100%;
-  position: relative;
-  background-color: #000; /* Fond noir */
-  color: #f8f8f8; /* Texte blanc clair */
+  background-color: rgb(0, 0, 0);
+  color: white; /* <-- ici */
 }
+
 
 /* Assurer que tous les textes utilisent DM Serif Display */
 h1, h2, h3, h4, h5, h6, p, span, a, button {

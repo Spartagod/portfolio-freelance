@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FiGithub, FiInstagram, FiLinkedin, FiMenu, FiX } from "react-icons/fi";
 import { useState } from "react";
 
-const Header = () => {
+const Header = ({ goToSection }) => {
   // Toggle the Menu open/close
   const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -49,10 +49,9 @@ const Header = () => {
         </motion.div>
 
         {/* Desktop Navigation */}
-        <button className="lg:flex hidden space-x-8">
-          {[ "Project", "Experience", "Contact"].map((item, index) => (
-            <motion.a
-              
+        <div className="lg:flex hidden space-x-8">
+          {["Project", "Experience", "Contact"].map((item, index) => (
+            <motion.button
               key={item}
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -61,19 +60,15 @@ const Header = () => {
                 stiffness: 100,
                 damping: 20,
                 delay: 0.7 + index * 0.2,
-          }}
-    className="relative text-gray-800 dark:text-gray-200 hover:text-violet-600 dark:hover:text-violet-400 font-medium transition-colors duration-300 group"
-    onClick={() => {
-      const section = document.getElementById(item.toLowerCase());
-      section?.scrollIntoView({ behavior: "smooth" });
-    }}
-  >
-    {item}
-    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-violet-600 group-hover:w-full transition-all duration-300"></span>
-  </motion.a>
-))}
-           
-        </button>
+              }}
+              onClick={() => goToSection(item.toLowerCase())}
+              className="relative text-white dark:text-white hover:text-violet-600 dark:hover:text-violet-400 font-medium transition-colors duration-300 group"
+            >
+              {item}
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-violet-600 group-hover:w-full transition-all duration-300"></span>
+            </motion.button>
+          ))}
+        </div>
 
         {/* Social icons - Desktop */}
         <div className="md:flex hidden items-center space-x-4">
@@ -81,9 +76,11 @@ const Header = () => {
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 1.3, duration: 0.8 }}
-            className="text-gray-700 dark:text-gray-300 hover:text-violet-600
+            className="relative text-white dark:text-gray-300 hover:text-violet-600
             dark:hover:text-violet-400 transition-colors duration-300"
-            href="#"
+            href="https://github.com/Spartagod/portfolio-freelance"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             <FiGithub className="w-5 h-5" />
           </motion.a>
@@ -92,7 +89,7 @@ const Header = () => {
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 1.3, duration: 0.8 }}
-            className="text-gray-700 dark:text-gray-300 hover:text-violet-600
+            className="relative text-white dark:text-gray-300 hover:text-violet-600
             dark:hover:text-violet-400 transition-colors duration-300"
             href="#"
           >
@@ -103,9 +100,11 @@ const Header = () => {
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 1.3, duration: 0.8 }}
-            className="text-gray-700 dark:text-gray-300 hover:text-violet-600
+            className="relative text-white dark:text-gray-300 hover:text-violet-600
             dark:hover:text-violet-400 transition-colors duration-300"
-            href="#"
+            href="https://www.linkedin.com/feed/?trk=guest_homepage-basic_google-one-tap-submit"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             <FiLinkedin className="w-5 h-5" />
           </motion.a>
@@ -157,17 +156,18 @@ const Header = () => {
       px-4 py-5 space-y-5"
         >
           <nav className="flex flex-col space-y-3">
-            {[ "Project", "Experience", "Contact"].map(
-              (item) => (
-                <a
-                  className="text-gray-300 font-medium py-2"
-                  key={item}
-                  href="#"
-                >
-                  {item}
-                </a>
-              )
-            )}
+            {["Project", "Experience", "Contact"].map((item) => (
+              <button
+                key={item}
+                className="text-gray-300 font-medium py-2 text-left"
+                onClick={() => {
+                  toggleMenu();
+                  goToSection(item.toLowerCase());
+                }}
+              >
+                {item}
+              </button>
+            ))}
           </nav>
 
           <div
@@ -175,7 +175,11 @@ const Header = () => {
         dark:border-gray-700"
           >
             <div className="flex space-x-5">
-              <a href="#">
+              <a
+                href="https://github.com/Spartagod/portfolio-freelance"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <FiGithub className="h-5 w-5 text-gray-300" />
               </a>
 
@@ -183,7 +187,11 @@ const Header = () => {
                 <FiInstagram className="h-5 w-5 text-gray-300" />
               </a>
 
-              <a href="#">
+              <a
+                href="https://www.linkedin.com/feed/?trk=guest_homepage-basic_google-one-tap-submit"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <FiLinkedin className="h-5 w-5 text-gray-300" />
               </a>
             </div>
@@ -191,7 +199,7 @@ const Header = () => {
             <button
               onClick={() => {
                 toggleMenu();
-                openContactForm()
+                openContactForm();
               }}
               className="mt-4 block w-full px-4 py-2 rounded-lg
             bg-gradient-to-r from-violet-600 to-violet-400 font-bold text-white"
@@ -204,120 +212,109 @@ const Header = () => {
 
       {/* Contact Form */}
       <AnimatePresence>
-      {contactFormOpen && (
+        {contactFormOpen && (
           <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1}}
-          exit={{opacity: 0}}
-          transition={{ duration: 0.5 }}
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex
           items-center justify-center
           justify-center p-4"
-          
-
-        >
-        
+          >
             <motion.div
-                initial={{ scale: 0.8, opacity: 0, y: 30}}
-                animate={{ scale: 0.8, opacity: 1, y: 0}}
-                exit={{ scale: 0.8, opacity: 0, y:30 }}
-                transition={{
-                    type: "spring",
-                    damping: 30,
-                    stiffness: 200,
-                    duration: 0.8,
-                }}
-                className="bg-white dark:bg-gray-800 rounded-xl shadow-xl
+              initial={{ scale: 0.8, opacity: 0, y: 30 }}
+              animate={{ scale: 0.8, opacity: 1, y: 0 }}
+              exit={{ scale: 0.8, opacity: 0, y: 30 }}
+              transition={{
+                type: "spring",
+                damping: 30,
+                stiffness: 200,
+                duration: 0.8,
+              }}
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-xl
                 w-full max-w-md p-6"
             >
-
-                <div className="flex justify-between items-center
+              <div className="flex justify-between items-center
                 mb-4">
-                    <h1 className="text-2x1 font-bold
+                <h1 className="text-2x1 font-bold
                     text-gray-300">
-                        Get in Touch
-                    </h1>
+                  Get in Touch
+                </h1>
 
-                    <button onClick={closeContactForm}>
-                        <FiX className="w-5 h-5 text-gray-300
-                        font-extrabold"/>
-                    </button>
+                <button onClick={closeContactForm}>
+                  <FiX className="w-5 h-5 text-gray-300
+                        font-extrabold" />
+                </button>
+              </div>
+
+              {/* Input forms */}
+              <form className="space-y-4">
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium
+                        text-sm font-medium text-gray-300 mb-1">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    placeholder="Your Name"
+                    className="w-full px-4 py-2 border
+                            border-gray-600 rounded-lg focus:ring-2
+                            focus:ring-violet-500
+                            focus:border-violet-500 bg-gray-700"
+                  />
                 </div>
 
-                {/* Input forms */}
-                <form className="space-y-4">
-                    <div>
-                        <label htmlFor="name" className="block text-sm font-medium
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium
                         text-sm font-medium text-gray-300 mb-1">
-                            Name
-                        </label>
-                        <input
-                            type="text"
-                            id="name"
-                            placeholder="Your Name"
-                            className="w-full px-4 py-2 border
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    placeholder="Your Email"
+                    className="w-full px-4 py-2 border
                             border-gray-600 rounded-lg focus:ring-2
                             focus:ring-violet-500
                             focus:border-violet-500 bg-gray-700"
-                        />
-                        
-                    </div>
+                  />
+                </div>
 
-                    
-                    <div>
-                        <label htmlFor="email" className="block text-sm font-medium
+                <div>
+                  <label htmlFor="message" className="block text-sm font-medium
                         text-sm font-medium text-gray-300 mb-1">
-                            Email
-                        </label>
-                        <input
-                            type="email"
-                            id="email"
-                            placeholder="Your Email"
-                            className="w-full px-4 py-2 border
+                    Message
+                  </label>
+                  <textarea
+                    rows="4"
+                    id="message"
+                    placeholder="How can we help you?"
+                    className="w-full px-4 py-2 border
                             border-gray-600 rounded-lg focus:ring-2
                             focus:ring-violet-500
                             focus:border-violet-500 bg-gray-700"
-                        />
-                        
-                    </div>
+                  />
+                </div>
 
-                    
-                    <div>
-                        <label htmlFor="message" className="block text-sm font-medium
-                        text-sm font-medium text-gray-300 mb-1">
-                            Message
-                        </label>
-                        <textarea
-                            rows="4"
-                            id="message"
-                            placeholder="How can we help you?"
-                            className="w-full px-4 py-2 border
-                            border-gray-600 rounded-lg focus:ring-2
-                            focus:ring-violet-500
-                            focus:border-violet-500 bg-gray-700"
-                        />
-                        
-                    </div>
-
-                    <motion.button
-                    type="submit"
-                    whileHover={{ scale: 1.03}}
-                    whileTap={{scale: 0.97}}
-                    className="w-full px-4 py-2
+                <motion.button
+                  type="submit"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="w-full px-4 py-2
                     bg-gradient-to-r from-violet-600 to-violet-400
                     hover:from-violet-700 hover:to-purple-700
                     transition-all duration-300 rounded-lg shadow-md
-                    hover:shadow-lg hover:shadow-violet-600/50">
-                        Send Message
-                    </motion.button>
-
-                </form>
-
+                    hover:shadow-lg hover:shadow-violet-600/50"
+                >
+                  Send Message
+                </motion.button>
+              </form>
             </motion.div>
-        </motion.div>
-      )}
+          </motion.div>
+        )}
       </AnimatePresence>
-
     </header>
   );
 };

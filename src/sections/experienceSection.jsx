@@ -28,29 +28,32 @@ export default function ExperienceSection() {
       id="experience"
       className="relative min-h-screen bg-gradient-to-b from-black to-purple-950 flex flex-col items-center justify-start px-10 xl:px-24 overflow-hidden"
     >
-      <h2 className="text-white text-center pt-16 text-4xl font-semibold z-10">
-        Experience
-      </h2>
+      {/* Wrapper pour positionner le contenu à 80% de la hauteur */}
+      <div className="flex flex-col items-center justify-start w-full z-10" style={{ paddingTop: '15vh' }}>
+        <h2 className="text-white text-center text-4xl font-semibold mb-12">
+          Experience
+        </h2>
 
-      <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full relative z-10">
-        {experiences.map((exp, index) => (
-          <motion.div
-            key={index}
-            className="bg-gray-900 bg-opacity-60 p-6 rounded-xl shadow-lg border border-purple-700"
-            initial={{ opacity: 0, y: 50 }}  // invisible et en bas
-            whileInView={{ opacity: 1, y: 0 }}  // apparait quand on scroll dessus
-            viewport={{ once: true, amount: 0.1 }} // déclenche quand 30% visible
-            transition={{ duration: 0.7, delay: index * 0.2, ease: "easeOut" }}
-          >
-            <h3 className="text-purple-400 text-xl font-semibold mb-2">{exp.title}</h3>
-            <p className="text-gray-300 text-sm mb-2">{exp.company}</p>
-            <p className="text-gray-400 text-xs mb-4">{exp.period}</p>
-            <p className="text-gray-200">{exp.description}</p>
-          </motion.div>
-        ))}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
+          {experiences.map((exp, index) => (
+            <motion.div
+              key={index}
+              className="bg-gray-900 bg-opacity-60 p-6 rounded-xl shadow-lg border border-purple-700"
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.7, delay: index * 0.2, ease: "easeOut" }}
+            >
+              <h3 className="text-purple-400 text-xl font-semibold mb-2">{exp.title}</h3>
+              <p className="text-gray-300 text-sm mb-2">{exp.company}</p>
+              <p className="text-gray-400 text-xs mb-4">{exp.period}</p>
+              <p className="text-gray-200">{exp.description}</p>
+            </motion.div>
+          ))}
+        </div>
       </div>
 
-      {/* Décor SVG derrière les cartes */}
+      {/* Décor SVG */}
       <svg
         viewBox="0 0 1440 200"
         preserveAspectRatio="none"

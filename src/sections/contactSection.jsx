@@ -11,7 +11,7 @@ export default function ContactSection() {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
-    // Création des particules
+    // Particules
     const numParticles = 30;
     particles.current = [];
     for (let i = 0; i < numParticles; i++) {
@@ -77,9 +77,9 @@ export default function ContactSection() {
   return (
     <section
       id="contact"
-      className="relative flex flex-col items-center justify-start px-10 xl:px-24 py-24 bg-gradient-to-b from-black to-purple-950 overflow-hidden"
+      className="relative flex flex-col items-center justify-between h-screen px-10 xl:px-24 py-20 bg-gradient-to-b from-black to-purple-950 overflow-hidden"
     >
-      {/* Canvas des particules */}
+      {/* Canvas */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full pointer-events-none z-0"
@@ -87,10 +87,10 @@ export default function ContactSection() {
 
       {/* Titre */}
       <motion.h2
-        className="text-white text-4xl font-semibold mb-12 z-10"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+        className="text-white text-5xl font-semibold z-10"
+        initial={{ opacity: 0, y: 60 }}
+        whileInView={{ opacity: 1, y: 70 }}
+        viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.8 }}
       >
         Contact Me
@@ -99,9 +99,9 @@ export default function ContactSection() {
       {/* Formulaire */}
       <motion.form
         className="w-full max-w-xl flex flex-col z-10 space-y-6"
-        initial={{ opacity: 0, y: 50 }}
+        initial={{ opacity: 0, y: 60 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+        viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.8, delay: 0.2 }}
       >
         <input
@@ -126,6 +126,17 @@ export default function ContactSection() {
           Send
         </button>
       </motion.form>
+
+      {/* EMAIL en bas */}
+      <motion.p
+        className="text-white text-3xl font-semibold mt-12 z-10 pb-6"
+        initial={{ opacity: 0, y: 80 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 1, delay: 0.4 }}
+      >
+        tom.koulmann@epitech.eu
+      </motion.p>
     </section>
   );
 }
