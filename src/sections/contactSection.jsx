@@ -11,7 +11,6 @@ export default function ContactSection() {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
-    // Particules
     const numParticles = 30;
     particles.current = [];
     for (let i = 0; i < numParticles; i++) {
@@ -27,14 +26,11 @@ export default function ContactSection() {
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
       particles.current.forEach((p) => {
         p.x += p.dx;
         p.y += p.dy;
-
         if (p.x < 0 || p.x > canvas.width) p.dx = -p.dx;
         if (p.y < 0 || p.y > canvas.height) p.dy = -p.dy;
-
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
         ctx.fillStyle = p.color;
@@ -42,7 +38,6 @@ export default function ContactSection() {
         ctx.shadowColor = "#a78bfa";
         ctx.fill();
       });
-
       requestAnimationFrame(animate);
     };
     animate();
@@ -51,7 +46,6 @@ export default function ContactSection() {
       const rect = canvas.getBoundingClientRect();
       const mouseX = e.clientX - rect.left;
       const mouseY = e.clientY - rect.top;
-
       particles.current.forEach((p) => {
         const dx = p.x - mouseX;
         const dy = p.y - mouseY;
@@ -75,66 +69,23 @@ export default function ContactSection() {
   }, []);
 
   return (
-    <section
-      id="contact"
-      className="relative flex flex-col items-center justify-between h-screen px-10 xl:px-24 py-20 bg-gradient-to-b from-black to-purple-950 overflow-hidden"
-    >
-      {/* Canvas */}
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full pointer-events-none z-0"
-      ></canvas>
+    <section id="contact" className="relative flex flex-col items-center justify-between h-screen px-4 sm:px-10 xl:px-24 py-20 bg-gradient-to-b from-black to-purple-950 overflow-hidden">
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-0" />
 
-      {/* Titre */}
-      <motion.h2
-        className="text-white text-5xl font-semibold z-10"
-        initial={{ opacity: 0, y: 60 }}
-        whileInView={{ opacity: 1, y: 70 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.8 }}
-      >
+      <motion.h2 className="text-white text-4xl md:text-5xl lg:text-5xl font-semibold z-10 mb-12" initial={{ opacity: 0, y: 60 }} whileInView={{ opacity: 1, y: 70 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.8 }}>
         Contact Me
       </motion.h2>
 
-      {/* Formulaire */}
-      <motion.form
-        className="w-full max-w-xl flex flex-col z-10 space-y-6"
-        initial={{ opacity: 0, y: 60 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-      >
-        <input
-          type="text"
-          placeholder="Your Name"
-          className="p-4 rounded-lg bg-gray-900 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-600"
-        />
-        <input
-          type="email"
-          placeholder="Your Email"
-          className="p-4 rounded-lg bg-gray-900 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-600"
-        />
-        <textarea
-          placeholder="Your Message"
-          rows="6"
-          className="p-4 rounded-lg bg-gray-900 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-600"
-        ></textarea>
-        <button
-          type="submit"
-          className="bg-violet-600 hover:bg-violet-500 transition-colors duration-300 text-white font-semibold py-3 rounded-lg"
-        >
+      <motion.form className="w-full max-w-full md:max-w-xl flex flex-col z-10 space-y-6" initial={{ opacity: 0, y: 60 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.8, delay: 0.2 }}>
+        <input type="text" placeholder="Your Name" className="p-4 rounded-lg bg-gray-900 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-600" />
+        <input type="email" placeholder="Your Email" className="p-4 rounded-lg bg-gray-900 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-600" />
+        <textarea placeholder="Your Message" rows="6" className="p-4 rounded-lg bg-gray-900 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-600"></textarea>
+        <button type="submit" className="bg-violet-600 hover:bg-violet-500 transition-colors duration-300 text-white font-semibold py-3 rounded-lg">
           Send
         </button>
       </motion.form>
 
-      {/* EMAIL en bas */}
-      <motion.p
-        className="text-white text-3xl font-semibold mt-12 z-10 pb-6"
-        initial={{ opacity: 0, y: 80 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 1, delay: 0.4 }}
-      >
+      <motion.p className="text-white text-2xl md:text-3xl font-semibold mt-12 z-10 pb-6" initial={{ opacity: 0, y: 80 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 1, delay: 0.4 }}>
         tom.koulmann@epitech.eu
       </motion.p>
     </section>

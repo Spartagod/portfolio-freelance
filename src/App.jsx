@@ -18,7 +18,6 @@ export default function App() {
   const [scrollDir, setScrollDir] = useState("down");
   const [isTransitioning, setIsTransitioning] = useState(false);
 
-  // ----------- Navigation depuis Header -----------
   const goToSection = (sectionId) => {
     const index = sections.findIndex((s) => s.id === sectionId);
     if (index === -1 || isTransitioning) return;
@@ -30,7 +29,6 @@ export default function App() {
     setTimeout(() => setIsTransitioning(false), 900);
   };
 
-  // ----------- Navigation avec scroll -----------
   useEffect(() => {
     const handleWheel = (e) => {
       if (isTransitioning) return;
@@ -39,10 +37,8 @@ export default function App() {
       setScrollDir(direction);
 
       let nextIndex = currentSection;
-
       if (direction === "down" && currentSection < sections.length - 1)
         nextIndex = currentSection + 1;
-
       else if (direction === "up" && currentSection > 0)
         nextIndex = currentSection - 1;
 
@@ -57,36 +53,40 @@ export default function App() {
     return () => window.removeEventListener("wheel", handleWheel);
   }, [currentSection, isTransitioning]);
 
-  // ----------- Animations Framer Motion -----------
   const variants = {
     initial: (dir) => ({
-      y: dir === "down" ? "100%" : "-100%",
+      y: dir === "down" ? 40 : -40,
       opacity: 0,
+      filter: "blur(4px)",
+      scale: 0.97,
+      position: "absolute",
+      width: "100%",
+      height: "100%",
     }),
     animate: {
-      y: "0%",
+      y: 0,
       opacity: 1,
-      transition: { duration: 0.9, ease: "easeInOut" },
+      filter: "blur(0px)",
+      scale: 1,
+      transition: { duration: 0.85, ease: [0.77, 0, 0.175, 1] },
+      position: "absolute",
+      width: "100%",
+      height: "100%",
     },
     exit: (dir) => ({
-      y: dir === "down" ? "-100%" : "100%",
+      y: dir === "down" ? -40 : 40,
       opacity: 0,
-      transition: { duration: 0.9, ease: "easeInOut" },
+      filter: "blur(4px)",
+      scale: 0.97,
+      transition: { duration: 0.85, ease: [0.77, 0, 0.175, 1] },
+      position: "absolute",
+      width: "100%",
+      height: "100%",
     }),
-  };
-
-  const contentVariants = {
-    initial: { opacity: 0, y: 40 },
-    animate: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.8, ease: "easeOut" },
-    },
   };
 
   return (
     <>
-      {/* On passe la fonction au Header */}
       <Header goToSection={goToSection} />
 
       <div style={{ position: "relative", overflow: "hidden", height: "100vh" }}>
@@ -98,22 +98,10 @@ export default function App() {
             initial="initial"
             animate="animate"
             exit="exit"
-            style={{
-              height: "100vh",
-              width: "100%",
-              position: "absolute",
-              top: 0,
-              left: 0,
-            }}
           >
-            <motion.div
-              variants={contentVariants}
-              initial="initial"
-              animate="animate"
-              className="h-full"
-            >
+            <div style={{ position: "relative", zIndex: 10, height: "100%" }}>
               {sections[currentSection].component}
-            </motion.div>
+            </div>
           </motion.div>
         </AnimatePresence>
       </div>
